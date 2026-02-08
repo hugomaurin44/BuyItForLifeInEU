@@ -4,15 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BIFL Guide Europe</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:opsz,wght@8..144,400;8..144,700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
-<body class="dark-mode">
-
-    <header>
+<body> <header>
         <nav>
             <span class="logo">🇪🇺 BIFL Guide</span>
             <div class="controls">
@@ -34,7 +30,7 @@
     </header>
 
     <main id="content">
-        <p>Chargement...</p>
+        <p>Chargement du guide...</p>
     </main>
 
     <script>
@@ -45,30 +41,43 @@
             const select = document.getElementById('lang-select');
             select.value = lang;
 
-            // FR at root, others in /content
             const filePath = (lang === 'fr') ? `BIFL_FR.md` : `content/BIFL_${lang.toUpperCase()}.md`;
 
             try {
                 const response = await fetch(filePath);
                 if (!response.ok) throw new Error('File not found');
                 const text = await response.text();
-                
-                container.style.opacity = 0;
-                setTimeout(() => {
-                    container.innerHTML = marked.parse(text);
-                    container.style.opacity = 1;
-                }, 100);
-                
+                container.innerHTML = marked.parse(text);
                 window.location.hash = lang;
             } catch (err) {
-                container.innerHTML = `<p>Erreur : Version ${lang} introuvable.</p>`;
+                container.innerHTML = `<p>Erreur : Impossible de charger la langue ${lang}.</p>`;
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.body.classList.contains('dark-mode');
+            // On bascule entre les classes light et dark
+            if (isDark) {
+                document.body.classList.remove('dark-mode');
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('light-mode');
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
             }
         }
 
         function setLanguage(lang) { loadContent(lang); }
-        function toggleTheme() { document.body.classList.toggle('dark-mode'); }
 
         function init() {
+            // 1. Thème
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.body.classList.add(savedTheme + '-mode');
+            }
+            
+            // 2. Langue
             let currentLang = window.location.hash.replace('#', '').toLowerCase();
             if (!supportedLangs.includes(currentLang)) {
                 const browserLang = navigator.language.split('-')[0];
@@ -76,6 +85,7 @@
             }
             loadContent(currentLang);
         }
+
         window.onload = init;
     </script>
 </body>
