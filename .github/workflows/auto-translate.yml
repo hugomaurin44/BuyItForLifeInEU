@@ -1,0 +1,32 @@
+name: Auto-Translate
+on:
+  push:
+    paths:
+      - 'BIFL FR.md' # Se lance quand tu modifies le fichier français
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Important pour que le robot puisse enregistrer les fichiers
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Argos Translate
+        run: pip install argostranslate
+
+      - name: Run translation
+        run: python translate_bifl.py
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'Translate-Bot'
+          git config --global user.email 'bot@github.com'
+          git add content/*.md
+          git commit -m "🤖 Mise à jour automatique des traductions" || echo "Pas de changements"
+          git push
