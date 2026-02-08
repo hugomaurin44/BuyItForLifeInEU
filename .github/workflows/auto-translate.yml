@@ -1,32 +1,48 @@
-name: Auto-Translate
+name: Auto-Translate BIFL (Argos Local)
+
 on:
   push:
     paths:
-      - 'BIFL FR.md' # Se lance quand tu modifies le fichier français
+      - 'BIFL FR.md'       # Se déclenche uniquement si le fichier source change
+      - 'Argos translate BIFL_FR.py' # Ou si tu modifies le script
+
+permissions:
+  contents: write          # INDISPENSABLE pour que le robot puisse sauvegarder
 
 jobs:
-  build:
+  translate:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # Important pour que le robot puisse enregistrer les fichiers
+
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up Python
+      - name: 📥 Récupération du code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Installation Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Install Argos Translate
-        run: pip install argostranslate
+      - name: 💾 Cache des modèles Argos
+        uses: actions/cache@v4
+        with:
+          # On cache le dossier où Argos stocke ses modèles
+          path: ~/.local/share/argos-translate
+          # La clé change si le script change (au cas où on ajoute une langue)
+          key: argos-models-${{ hashFiles('Argos translate BIFL_FR.py') }}
 
-      - name: Run translation
-        run: python translate_bifl.py
-
-      - name: Commit and Push
+      - name: 📦 Installation des dépendances
         run: |
-          git config --global user.name 'Translate-Bot'
+          pip install argostranslate
+
+      - name: 🤖 Lancement de la traduction
+        run: python "Argos translate BIFL_FR.py"
+
+      - name: 📤 Sauvegarde des résultats
+        run: |
+          git config --global user.name 'BIFL-Bot'
           git config --global user.email 'bot@github.com'
-          git add content/*.md
-          git commit -m "🤖 Mise à jour automatique des traductions" || echo "Pas de changements"
+          # On ajoute tout le dossier content
+          git add content/
+          # On commit seulement s'il y a des changements
+          git commit -m "🌍 Mise à jour auto des traductions (Argos)" || echo "Rien à commiter"
           git push
