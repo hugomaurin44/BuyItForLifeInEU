@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIFL Guide Europe</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
 
+    <header>
+        <nav>
+            <span class="logo">🇪🇺 BIFL Guide</span>
+            <div id="language-picker">
+                <button onclick="setLanguage('en')">EN</button>
+                <button onclick="setLanguage('fr')">FR</button>
+                <button onclick="setLanguage('de')">DE</button>
+                <button onclick="setLanguage('ru')">RU</button>
+                <button onclick="setLanguage('it')">IT</button>
+                <button onclick="setLanguage('es')">ES</button>
+                <button onclick="setLanguage('pl')">PL</button>
+                <button onclick="setLanguage('uk')">UK</button>
+                <button onclick="setLanguage('ro')">RO</button>
+                <button onclick="setLanguage('nl')">NL</button>
+            </div>
+        </nav>
+    </header>
+
+    <main id="content">
+        <p>Loading guide...</p>
+    </main>
+
+    <script>
+        const supportedLangs = ['en', 'fr', 'de', 'ru', 'it', 'es', 'pl', 'uk', 'ro', 'nl'];
+
+        // Function to load the MD file
+        async function loadContent(lang) {
+            const container = document.getElementById('content');
+            try {
+                // Fetch the translated markdown file
+                const response = await fetch(`content/BIFL_${lang.toUpperCase()}.md`);
+                if (!response.ok) throw new Error('File not found');
+                const text = await response.text();
+                // Convert Markdown to HTML and inject
+                container.innerHTML = marked.parse(text);
+                // Update URL hash without reloading
+                window.location.hash = lang;
+            } catch (err) {
+                container.innerHTML = "<p>Error loading content. Please try another language.</p>";
+            }
+        }
+
+        // Manual switch
+        function setLanguage(lang) {
+            loadContent(lang);
+        }
+
+        // Initialization logic
+        function init() {
+            // 1. Check if a language is already in the URL hash (e.g. #fr)
+            let currentLang = window.location.hash.replace('#', '').toLowerCase();
+
+            // 2. If no hash, detect browser language
+            if (!supportedLangs.includes(currentLang)) {
+                const browserLang = navigator.language.split('-')[0];
+                currentLang = supportedLangs.includes(browserLang) ? browserLang : 'en';
+            }
+
+            loadContent(currentLang);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
