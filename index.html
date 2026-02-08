@@ -6,9 +6,13 @@
     <title>BIFL Guide Europe</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:opsz,wght@8..144,400;8..144,700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 </head>
-<body> <header>
+<body> 
+
+    <header>
         <nav>
             <span class="logo">🇪🇺 BIFL Guide</span>
             <div class="controls">
@@ -33,6 +37,15 @@
         <p>Chargement du guide...</p>
     </main>
 
+    <footer>
+        <p>
+            made by <a href="https://github.com/hugomaurin44" target="_blank">Hugo Maurin</a> 
+            using <a href="https://claude.ai" target="_blank">Claude AI</a> 
+            and <a href="https://gemini.google.com" target="_blank">Gemini</a> - 
+            <a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache 2.0</a>
+        </p>
+    </footer>
+
     <script>
         const supportedLangs = ['fr', 'en', 'de', 'ru', 'it', 'es', 'pl', 'uk', 'ro', 'nl'];
 
@@ -47,7 +60,13 @@
                 const response = await fetch(filePath);
                 if (!response.ok) throw new Error('File not found');
                 const text = await response.text();
+                
+                // 1. Conversion Markdown -> HTML
                 container.innerHTML = marked.parse(text);
+                
+                // 2. Application de Twemoji (Jolis emojis)
+                twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });
+
                 window.location.hash = lang;
             } catch (err) {
                 container.innerHTML = `<p>Erreur : Impossible de charger la langue ${lang}.</p>`;
@@ -56,7 +75,6 @@
 
         function toggleTheme() {
             const isDark = document.body.classList.contains('dark-mode');
-            // On bascule entre les classes light et dark
             if (isDark) {
                 document.body.classList.remove('dark-mode');
                 document.body.classList.add('light-mode');
@@ -71,13 +89,9 @@
         function setLanguage(lang) { loadContent(lang); }
 
         function init() {
-            // 1. Thème
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                document.body.classList.add(savedTheme + '-mode');
-            }
+            if (savedTheme) { document.body.classList.add(savedTheme + '-mode'); }
             
-            // 2. Langue
             let currentLang = window.location.hash.replace('#', '').toLowerCase();
             if (!supportedLangs.includes(currentLang)) {
                 const browserLang = navigator.language.split('-')[0];
