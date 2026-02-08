@@ -6,6 +6,7 @@
     --title-color: #000000;
     --text-color: #121214;
     --border-color: #e1e4e8;
+    --arrow-color: #000000; /* Flèche noire pour select clair */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,16 +17,17 @@
         --title-color: #ffffff;
         --text-color: #F4F8FF;
         --border-color: #2f2f2f;
+        --arrow-color: #ffffff; /* Flèche blanche pour select sombre */
     }
 }
 
-/* Classes pour le changement manuel via JS */
 body.light-mode {
     --banner-bg: #ffffff;
     --bg-color: #F4F8FF;
     --title-color: #000000;
     --text-color: #121214;
     --border-color: #e1e4e8;
+    --arrow-color: #000000;
 }
 
 body.dark-mode {
@@ -34,16 +36,18 @@ body.dark-mode {
     --title-color: #ffffff;
     --text-color: #F4F8FF;
     --border-color: #2f2f2f;
+    --arrow-color: #ffffff;
 }
 
-/* --- STRUCTURE GÉNÉRALE --- */
+/* --- STRUCTURE --- */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--bg-color);
-    color: var(--text-color); /* Couleur pour le texte général */
+    color: var(--text-color);
     margin: 0;
-    line-height: 1.6;
-    transition: background 0.2s, color 0.2s;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Pour coller le footer en bas si peu de contenu */
 }
 
 header {
@@ -63,50 +67,49 @@ nav {
     align-items: center;
 }
 
-/* --- TYPOGRAPHIE --- */
 .logo {
     font-family: 'Roboto Serif', serif;
     font-weight: 700;
     font-size: 1.4rem;
     color: var(--title-color);
+    display: flex; 
+    align-items: center; 
+    gap: 10px;
 }
 
-h1, h2, h3 {
-    font-family: 'Roboto Serif', serif;
-    font-weight: 700;
-    color: var(--title-color); /* Uniquement noir ou blanc selon theme */
-    margin-top: 2.5rem;
-}
-
-h1 { font-size: 2.2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
-h2 { font-size: 1.8rem; }
-h3 { font-size: 1.4rem; }
-
-/* --- FIX DU MENU DÉROULANT --- */
+/* --- CUSTOM SELECT (Coins arrondis sur Windows) --- */
 select {
+    appearance: none; /* Désactive le look Windows moche */
+    -webkit-appearance: none;
+    -moz-appearance: none;
     background-color: var(--banner-bg);
     color: var(--text-color);
     border: 1px solid var(--border-color);
-    padding: 6px 10px;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 8px 30px 8px 12px; /* Place à droite pour la flèche */
+    border-radius: 8px; /* Coins bien arrondis */
     font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
     outline: none;
+    
+    /* Petite flèche SVG générée en CSS */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 1em;
 }
 
-/* Force la visibilité des options sur tous les navigateurs */
-select option {
-    background-color: var(--banner-bg);
-    color: var(--text-color);
-}
+/* En mode sombre, on inverse la couleur de la flèche SVG via un filtre ou en changeant la couleur du texte (currentColor) */
+/* Astuce : stroke='currentColor' dans le SVG prend la couleur du texte ! */
 
 #theme-toggle {
     background: transparent;
-    color: var(--text-color);
     border: 1px solid var(--border-color);
-    padding: 6px 10px;
-    border-radius: 4px;
+    color: var(--text-color);
+    padding: 8px 12px;
+    border-radius: 8px;
     cursor: pointer;
+    margin-left: 10px;
 }
 
 /* --- CONTENU --- */
@@ -114,20 +117,53 @@ main {
     max-width: 800px;
     margin: 2rem auto;
     padding: 0 1.5rem;
+    flex: 1; /* Pousse le footer vers le bas */
 }
+
+h1, h2, h3 {
+    font-family: 'Roboto Serif', serif;
+    font-weight: 700;
+    color: var(--title-color);
+    margin-top: 2.5rem;
+}
+
+h1 { font-size: 2.2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.4rem; }
 
 a {
     color: var(--text-color);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
+a:hover { opacity: 0.7; }
 
 hr { border: 0; border-top: 1px solid var(--border-color); margin: 3rem 0; }
+code { background: var(--banner-bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color); }
 
-code {
-    background: var(--banner-bg);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.9em;
-    border: 1px solid var(--border-color);
+/* --- FOOTER --- */
+footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: 0.85rem;
+    opacity: 0.33; /* Transparence demandée */
+    margin-top: 4rem;
+    border-top: 1px solid var(--border-color);
+}
+
+footer a {
+    text-decoration: none; /* Pas de soulignement en bas pour être plus discret */
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* --- TWEMOJI (CSS obligatoire pour la taille) --- */
+img.emoji {
+    height: 1.2em;
+    width: 1.2em;
+    margin: 0 .05em 0 .1em;
+    vertical-align: -0.2em;
 }
