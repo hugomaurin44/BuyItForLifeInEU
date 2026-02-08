@@ -1,72 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BIFL Guide Europe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
-<body>
-
-    <header>
+<body class="dark-mode"> <header>
         <nav>
             <span class="logo">🇪🇺 BIFL Guide</span>
-            <div id="language-picker">
-                <button onclick="setLanguage('en')">EN</button>
-                <button onclick="setLanguage('fr')">FR</button>
-                <button onclick="setLanguage('de')">DE</button>
-                <button onclick="setLanguage('ru')">RU</button>
-                <button onclick="setLanguage('it')">IT</button>
-                <button onclick="setLanguage('es')">ES</button>
-                <button onclick="setLanguage('pl')">PL</button>
-                <button onclick="setLanguage('uk')">UK</button>
-                <button onclick="setLanguage('ro')">RO</button>
-                <button onclick="setLanguage('nl')">NL</button>
+            
+            <div class="controls">
+                <select id="lang-select" onchange="setLanguage(this.value)">
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="en">🇺🇸 English</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="it">🇮🇹 Italiano</option>
+                    <option value="pl">🇵🇱 Polski</option>
+                    <option value="ru">🇷🇺 Русский</option>
+                    <option value="uk">🇺🇦 Українська</option>
+                    <option value="ro">🇷🇴 Română</option>
+                    <option value="nl">🇳🇱 Nederlands</option>
+                </select>
+
+                <button id="theme-toggle" onclick="toggleTheme()">🌓</button>
             </div>
         </nav>
     </header>
 
-    <main id="content">
-        <p>Loading guide...</p>
+    <main id="content" class="fade-in">
+        <p>Chargement du guide...</p>
     </main>
 
     <script>
-        const supportedLangs = ['en', 'fr', 'de', 'ru', 'it', 'es', 'pl', 'uk', 'ro', 'nl'];
+        const supportedLangs = ['fr', 'en', 'de', 'ru', 'it', 'es', 'pl', 'uk', 'ro', 'nl'];
 
-        // Function to load the MD file
         async function loadContent(lang) {
             const container = document.getElementById('content');
+            const select = document.getElementById('lang-select');
+            select.value = lang; // Sync dropdown with current lang
+
+            // Logic: FR is at root, others are in /content
+            const filePath = (lang === 'fr') ? `BIFL_FR.md` : `content/BIFL_${lang.toUpperCase()}.md`;
+
             try {
-                // Fetch the translated markdown file
-                const response = await fetch(`content/BIFL_${lang.toUpperCase()}.md`);
+                const response = await fetch(filePath);
                 if (!response.ok) throw new Error('File not found');
                 const text = await response.text();
-                // Convert Markdown to HTML and inject
-                container.innerHTML = marked.parse(text);
-                // Update URL hash without reloading
+                
+                container.style.opacity = 0; // Small animation effect
+                setTimeout(() => {
+                    container.innerHTML = marked.parse(text);
+                    container.style.opacity = 1;
+                }, 150);
+                
                 window.location.hash = lang;
             } catch (err) {
-                container.innerHTML = "<p>Error loading content. Please try another language.</p>";
+                container.innerHTML = `<p>Error: Could not load the ${lang} version. Check if ${filePath} exists.</p>`;
             }
         }
 
-        // Manual switch
         function setLanguage(lang) {
             loadContent(lang);
         }
 
-        // Initialization logic
-        function init() {
-            // 1. Check if a language is already in the URL hash (e.g. #fr)
-            let currentLang = window.location.hash.replace('#', '').toLowerCase();
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
 
-            // 2. If no hash, detect browser language
+        function init() {
+            let currentLang = window.location.hash.replace('#', '').toLowerCase();
             if (!supportedLangs.includes(currentLang)) {
                 const browserLang = navigator.language.split('-')[0];
-                currentLang = supportedLangs.includes(browserLang) ? browserLang : 'en';
+                currentLang = supportedLangs.includes(browserLang) ? browserLang : 'fr';
             }
-
             loadContent(currentLang);
         }
 
