@@ -5,7 +5,7 @@ import argostranslate.package
 import argostranslate.translate
 
 # --- CONFIGURATION ---
-SOURCE_FILE = "BIFL FR.md"
+SOURCE_FILE = "BIFL_FR.md"
 # Argos passe par l'anglais pour la plupart des langues
 TARGET_LANGS = {
     'en': 'EN', # Pivot
