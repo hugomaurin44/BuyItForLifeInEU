@@ -1,26 +1,49 @@
+/* --- VARIABLES DE THEME --- */
 :root {
-    /* Theme Clair */
-    --banner-bg: #F4F8FF;
-    --bg-color: #ffffff;
-    --text-color: #000000;
-    --border-color: #eeeeee;
+    /* Theme CLAIR */
+    --banner-bg: #ffffff;
+    --bg-color: #F4F8FF;
+    --title-color: #000000;
+    --text-color: #121214;
+    --border-color: #e1e4e8;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Theme SOMBRE */
+        --banner-bg: #000000;
+        --bg-color: #121214;
+        --title-color: #ffffff;
+        --text-color: #F4F8FF;
+        --border-color: #2f2f2f;
+    }
+}
+
+/* Classes pour le changement manuel via JS */
+body.light-mode {
+    --banner-bg: #ffffff;
+    --bg-color: #F4F8FF;
+    --title-color: #000000;
+    --text-color: #121214;
+    --border-color: #e1e4e8;
 }
 
 body.dark-mode {
-    /* Theme Sombre */
-    --banner-bg: #1C1C1C;
-    --bg-color: #161616;
-    --text-color: #ffffff;
-    --border-color: #333333;
+    --banner-bg: #000000;
+    --bg-color: #121214;
+    --title-color: #ffffff;
+    --text-color: #F4F8FF;
+    --border-color: #2f2f2f;
 }
 
+/* --- STRUCTURE GÉNÉRALE --- */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--bg-color);
-    color: var(--text-color);
+    color: var(--text-color); /* Couleur pour le texte général */
     margin: 0;
     line-height: 1.6;
-    transition: background 0.2s;
+    transition: background 0.2s, color 0.2s;
 }
 
 header {
@@ -29,6 +52,7 @@ header {
     padding: 1rem 2rem;
     position: sticky;
     top: 0;
+    z-index: 100;
 }
 
 nav {
@@ -39,13 +63,44 @@ nav {
     align-items: center;
 }
 
+/* --- TYPOGRAPHIE --- */
 .logo {
     font-family: 'Roboto Serif', serif;
     font-weight: 700;
     font-size: 1.4rem;
+    color: var(--title-color);
 }
 
-select, #theme-toggle {
+h1, h2, h3 {
+    font-family: 'Roboto Serif', serif;
+    font-weight: 700;
+    color: var(--title-color); /* Uniquement noir ou blanc selon theme */
+    margin-top: 2.5rem;
+}
+
+h1 { font-size: 2.2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.4rem; }
+
+/* --- FIX DU MENU DÉROULANT --- */
+select {
+    background-color: var(--banner-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    outline: none;
+}
+
+/* Force la visibilité des options sur tous les navigateurs */
+select option {
+    background-color: var(--banner-bg);
+    color: var(--text-color);
+}
+
+#theme-toggle {
     background: transparent;
     color: var(--text-color);
     border: 1px solid var(--border-color);
@@ -54,53 +109,25 @@ select, #theme-toggle {
     cursor: pointer;
 }
 
+/* --- CONTENU --- */
 main {
     max-width: 800px;
     margin: 2rem auto;
     padding: 0 1.5rem;
-    transition: opacity 0.2s;
 }
 
-/* Titres specifiques : Roboto Serif pour H1, H2, H3 */
-h1, h2, h3 {
-    font-family: 'Roboto Serif', serif;
-    font-weight: 700;
-    margin-top: 2.5rem;
-    color: var(--text-color); /* Uniquement blanc ou noir */
-}
-
-h1 { font-size: 2.2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
-h2 { font-size: 1.8rem; }
-h3 { font-size: 1.4rem; }
-
-/* Liens : Pas de bleu, uniquement soulignés */
 a {
     color: var(--text-color);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
 
-a:hover {
-    opacity: 0.7;
-}
-
-hr {
-    border: 0;
-    border-top: 1px solid var(--border-color);
-    margin: 3rem 0;
-}
-
-blockquote {
-    border-left: 3px solid var(--text-color);
-    margin: 1.5rem 0;
-    padding-left: 1.5rem;
-    font-style: italic;
-    opacity: 0.8;
-}
+hr { border: 0; border-top: 1px solid var(--border-color); margin: 3rem 0; }
 
 code {
     background: var(--banner-bg);
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.9em;
+    border: 1px solid var(--border-color);
 }
