@@ -2,7 +2,8 @@
 
 Ce guide recense des produits qui durent, se réparent facilement, et restent abordables. L’objectif n'est pas de vendre du luxe inatteignable, mais de mettre en avant ce qui dure avec un bon rapport qualité-prix. Le modulaire, les matériaux simples (métal, bois massif, coton épais) sont mis en avant.
 
-Ce guide est basé sur les nombreux posts de r/BuyItForLife et la réputation des marques. nous n’avons aucune affiliation avec ces marques.
+Ce guide est basé sur les nombreux posts de r/BuyItForLife et la réputation des marques.
+NOUS N'AVONS AUCUNE AFFILIATION AVEC CES MARQUES.
 
 ### Légende des indicateurs
 
@@ -687,3 +688,4 @@ Le marché de l'occasion est essentiel pour la philosophie BIFL. Beaucoup de pro
 Conseil général : Pour l'électronique, privilégier le reconditionné avec garantie. Pour le reste (meubles, outils, vêtements), l'occasion directe est souvent plus intéressante.
 
 Guide rédigé avec l'ambition de pointer ce qui dure vraiment, sans compromis marketing.
+
