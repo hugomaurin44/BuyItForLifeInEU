@@ -1,41 +1,34 @@
 :root {
-    /* Light Theme (GitHub inspired) */
-    --bg-color: #F6F8FA;
-    --text-color: #1F2328;
-    --header-bg: #ffffff;
-    --accent-color: #0969da;
-    --border-color: #d0d7de;
-    --card-bg: #ffffff;
+    /* Theme Clair */
+    --banner-bg: #F4F8FF;
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --border-color: #eeeeee;
 }
 
 body.dark-mode {
-    /* Dark Theme */
-    --bg-color: #0D1117;
-    --text-color: #e6edf3;
-    --header-bg: #161b22;
-    --accent-color: #2f81f7;
-    --border-color: #30363d;
-    --card-bg: #161b22;
+    /* Theme Sombre */
+    --banner-bg: #1C1C1C;
+    --bg-color: #161616;
+    --text-color: #ffffff;
+    --border-color: #333333;
 }
-
-* { box-sizing: border-box; }
 
 body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     margin: 0;
-    transition: background 0.3s, color 0.3s;
     line-height: 1.6;
+    transition: background 0.2s;
 }
 
 header {
-    background: var(--header-bg);
+    background-color: var(--banner-bg);
     border-bottom: 1px solid var(--border-color);
     padding: 1rem 2rem;
     position: sticky;
     top: 0;
-    z-index: 100;
 }
 
 nav {
@@ -47,51 +40,67 @@ nav {
 }
 
 .logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem;
+    font-family: 'Roboto Serif', serif;
+    font-weight: 700;
+    font-size: 1.4rem;
 }
 
-.controls { display: flex; gap: 10px; align-items: center; }
-
 select, #theme-toggle {
-    background: var(--header-bg);
+    background: transparent;
     color: var(--text-color);
     border: 1px solid var(--border-color);
-    padding: 8px 12px;
-    border-radius: 6px;
+    padding: 6px 10px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 0.9rem;
 }
 
 main {
     max-width: 800px;
     margin: 2rem auto;
     padding: 0 1.5rem;
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s;
 }
 
-/* Typography Overrides */
+/* Titres specifiques : Roboto Serif pour H1, H2, H3 */
 h1, h2, h3 {
-    font-family: 'DM Serif Display', serif;
-    margin-top: 2rem;
-    color: var(--accent-color);
+    font-family: 'Roboto Serif', serif;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    color: var(--text-color); /* Uniquement blanc ou noir */
 }
 
-a { color: var(--accent-color); text-decoration: none; }
-a:hover { text-decoration: underline; }
+h1 { font-size: 2.2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.4rem; }
 
-/* BIFL List Styling */
-hr { border: 0; border-top: 1px solid var(--border-color); margin: 2rem 0; }
+/* Liens : Pas de bleu, uniquement soulignés */
+a {
+    color: var(--text-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+a:hover {
+    opacity: 0.7;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 3rem 0;
+}
 
 blockquote {
-    border-left: 4px solid var(--accent-color);
-    padding-left: 1rem;
-    margin-left: 0;
+    border-left: 3px solid var(--text-color);
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
     font-style: italic;
-    color: #8b949e;
+    opacity: 0.8;
 }
 
-img { max-width: 100%; border-radius: 8px; }
-
-/* Utility class for transitions */
-.fade-in { opacity: 1; }
+code {
+    background: var(--banner-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
