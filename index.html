@@ -54,7 +54,7 @@
             select.value = lang;
 
             // ATTENTION : Ici aussi on utilise l'espace pour le fichier FR
-            const filePath = (lang === 'fr') ? `BIFL FR.md` : `content/BIFL_${lang.toUpperCase()}.md`;
+            const filePath = (lang === 'fr') ? `BIFL_FR.md` : `content/BIFL_${lang.toUpperCase()}.md`;
 
             try {
                 const response = await fetch(filePath);
